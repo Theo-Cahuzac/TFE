@@ -1,0 +1,87 @@
+
+
+esphome:
+  name: volet_esp32c6
+
+esp32:
+  board: seeed_xiao_esp32c6
+  framework:
+    type: esp-idf
+    
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+logger:
+
+api:
+
+ota:
+  - platform: esphome
+
+switch:
+  - platform: gpio
+    id: relais_1
+    internal: true
+    pin: GPIO19
+    restore_mode: ALWAYS_OFF
+
+  - platform: gpio
+    id: relais_2
+    internal: true
+    pin: GPIO20
+    restore_mode: ALWAYS_OFF
+
+  # MONTEE = relais 2 seul
+  - platform: template
+    id: relais_montee
+    name: "Volet Montée"
+
+    turn_on_action:
+      - switch.turn_off: relais_descente
+      - switch.turn_off: relais_1
+      - switch.turn_on: relais_2
+
+    turn_off_action:
+      - switch.turn_off: relais_2
+
+    lambda: |-
+      return id(relais_2).state && !id(relais_1).state;
+
+  # DESCENTE = relais 1 + relais 2
+  - platform: template
+    id: relais_descente
+    name: "Volet Descente"
+
+    turn_on_action:
+      - switch.turn_off: relais_montee
+      - switch.turn_on: relais_1
+      - switch.turn_on: relais_2
+
+    turn_off_action:
+      - switch.turn_off: relais_1
+      - switch.turn_off: relais_2
+
+    lambda: |-
+      return id(relais_1).state && id(relais_2).state;
+
+cover:
+  - platform: template
+    name: "Volet Salon"
+    id: volet_salon
+
+    open_action:
+      - switch.turn_on: relais_montee
+      - delay: 30s
+      - switch.turn_off: relais_montee
+
+    close_action:
+      - switch.turn_on: relais_descente
+      - delay: 30s
+      - switch.turn_off: relais_descente
+
+    stop_action:
+      - switch.turn_off: relais_montee
+      - switch.turn_off: relais_descente
+
+    optimistic: true
