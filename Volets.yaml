@@ -15,7 +15,7 @@ wifi:
 logger:
 
 api:
-
+    #il y à bien un api ici mais je ne vais pas le mettre sur github pour des raisons évidentes
 ota:
   - platform: esphome
 
@@ -32,7 +32,7 @@ switch:
     pin: GPIO20
     restore_mode: ALWAYS_OFF
 
-  # MONTEE = relais 2 seul
+  # MONTEE = relais 2 seulement
   - platform: template
     id: relais_montee
     name: "Volet Montée"
