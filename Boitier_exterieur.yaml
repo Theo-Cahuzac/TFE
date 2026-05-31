@@ -1,0 +1,54 @@
+esphome:
+  name: esphome-web-5c7e1c
+  friendly_name: Boitier extérieur
+  min_version: 2026.4.0
+  name_add_mac_suffix: false
+
+esp32:
+  variant: esp32
+  framework:
+    type: esp-idf
+
+logger:
+
+api:
+
+ota:
+  - platform: esphome
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+# Deux bus I2C distincts
+i2c:
+  - id: i2c_bus1
+    sda: 5
+    scl: 18
+    scan: true
+
+  - id: i2c_bus2
+    sda: 23
+    scl: 22
+    scan: true
+
+sensor:
+  # Capteur lumineux BH1750
+  - platform: bh1750
+    i2c_id: i2c_bus1
+    name: "Luminosité extérieure"
+    address: 0x23
+    update_interval: 60s
+
+  # Capteur temperature BME280
+  - platform: bme280_i2c
+    i2c_id: i2c_bus2
+    address: 0x76
+    update_interval: 60s
+    temperature:
+      name: "Température extérieure"
+      oversampling: 16x
+    pressure:
+      name: "Pression atmosphérique"
+    humidity:
+      name: "Humidité extérieure"
