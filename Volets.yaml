@@ -17,10 +17,10 @@ logger:
 
 api:
   encryption:
-    key: !secret device_name_api_key
+    key: !secret volet_sofa_api_key
 ota:
   - platform: esphome
-    password: !secret device_name_ota_password
+    password: !secret volet_sofa_ota_password
 
 switch:
   - platform: gpio
