@@ -1,7 +1,8 @@
 
 
 esphome:
-  name: volet_esp32c6
+  name: volet-sofa
+  friendly_name: Volet-sofa
 
 esp32:
   board: seeed_xiao_esp32c6
@@ -15,7 +16,8 @@ wifi:
 logger:
 
 api:
-    #il y à bien un api ici mais je ne vais pas le mettre sur github pour des raisons évidentes
+  encryption:
+    key: "Clé API"
 ota:
   - platform: esphome
 
