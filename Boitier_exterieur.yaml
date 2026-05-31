@@ -12,9 +12,13 @@ esp32:
 logger:
 
 api:
+  encryption:
+    key: !secret boitier_ext_api_key
+
 
 ota:
   - platform: esphome
+    password: !secret boitier_ext_ota_password
 
 wifi:
   ssid: !secret wifi_ssid
