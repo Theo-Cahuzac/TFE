@@ -17,9 +17,10 @@ logger:
 
 api:
   encryption:
-    key: "Clé API"
+    key: !secret device_name_api_key
 ota:
   - platform: esphome
+    password: !secret device_name_ota_password
 
 switch:
   - platform: gpio
